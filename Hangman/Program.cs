@@ -36,7 +36,7 @@ public class Program
     {
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine("\nWelcome to Hangman!");
+        Console.WriteLine("\nWelcome to man!");
         Console.WriteLine();
     }
 
