@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace Hangman;
+﻿namespace Hangman;
 
 public class Program
 {
@@ -36,7 +34,7 @@ public class Program
     {
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine("\nWelcome to man!");
+        Console.WriteLine("\nWelcome to hangman!!");
         Console.WriteLine();
     }
 
@@ -84,7 +82,6 @@ public class Program
         return guess;
     }
 
-    // Refactored to accept parameters for easier testing
     public static void CheckUserGuess(char guess)
     {
         if (!IsAllowedGuess(guess))
@@ -197,4 +194,3 @@ public class Program
         Console.WriteLine(message);
     }
 }
-
