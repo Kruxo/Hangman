@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Hänga gubbe", // Kan vara vad du vill
+            "type": "coreclr", // Alltid coreclr för .NET 
+            "request": "launch",
+            "preLaunchTask": "build", // Hänvisar till tasks.json, att vi ska bygga programmet först
+            "program": "${workspaceFolder}/bin/Debug/net8.0/Hangman.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,  // Detta är defulat
+            "console":  "integratedTerminal", // Viktig
+            "internalConsoleOptions":  "openOnSessionStart" // När Debug Console ska öppnas
+        }
+    ]
+}
