@@ -1,9 +1,12 @@
 ﻿namespace Hangman;
 
+using System.Text.Json;
+using System.IO;
+
 public class Program
 {
     // Global variables
-    static List<string> secretWords = new List<string> { "toast", "pizza", "sushi", "pie" };
+    static List<string> secretWords = LoadSecretWords();
     static Random random = new Random();
     static string secretWord = secretWords[random.Next(secretWords.Count)];
     static List<char> guessedLetters = new List<char>();
@@ -13,6 +16,7 @@ public class Program
 
     static void Main(string[] args)
     {
+        Console.Clear();
         GameIntro();
         while (lives > 0 || numberOfGuesses > 0)
         {
@@ -30,9 +34,30 @@ public class Program
         }
     }
 
+    public static List<string> LoadSecretWords()
+    {
+        try
+        {
+            string json = File.ReadAllText("secretWords.json"); //directory \Hangman\bin\Debug\net8.0
+            var wordsData = JsonSerializer.Deserialize<SecretWordsData>(json);
+            return wordsData.secretWords ?? new List<string>();
+        }
+        catch (Exception ex)
+        {
+            ErrorLine("Failed to load secret words from JSON file. Using default words."); //Won't be uploaded to the github because of gitignore */bin which is where this file is located at
+            return new List<string> { "toast", "pizza", "sushi", "pie" }; // Fallback default list
+        }
+    }
+
+    // Class to match the structure of the JSON file
+    public class SecretWordsData
+    {
+        public List<string> secretWords { get; set; }
+    }
+
     public static void GameIntro()
     {
-        Console.Clear();
+
         Console.ForegroundColor = ConsoleColor.White;
         Console.WriteLine("\nWelcome to hangman!!");
         Console.WriteLine();
@@ -52,18 +77,18 @@ public class Program
         Console.WriteLine();
         return Console.ReadLine().ToLower();
     }
+
     public static bool HandleEndGame(string restartGame)
     {
-
         if (restartGame.Contains("y") || restartGame.Contains("yes"))
         {
-            Console.Clear();
+
             ResetStats();
             return true;
         }
         else if (restartGame.Contains("n") || restartGame.Contains("no"))
         {
-            Console.Clear();
+
             WarningLine("Game Ended!");
             return false;
         }
@@ -89,13 +114,13 @@ public class Program
             WarningLine("Please enter a letter!");
             lives--;
             lives--;
-            return; //Exits the method earlier
+            return;
         }
         else if (guessedLetters.Contains(guess))
         {
             WarningLine("You have already guessed that letter!");
             lives--;
-            return; //Exits the method earlier instead of an else and the nest the if else statement below
+            return;
         }
 
         guessedLetters.Add(guess);
@@ -138,7 +163,6 @@ public class Program
         secretWord = secretWords[random.Next(secretWords.Count)];
     }
 
-    // Now public static for unit testing
     public static bool IsAllowedGuess(char guess)
     {
         return char.IsLetter(guess);
